@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      date: new Date(),
+      delay: 1000,
+      timer: null,
+      value: 0
+    }
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  componentDidMount () {
+    this.setState({
+      timer: setInterval(this.onTimerLoop.bind(this), this.state.delay)
+    })
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.state.timer)
+  }
+
+  onTimerLoop () {
+    this.setState((state, props) => ({
+      value: state.value + +props.increment
+    }))
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Привет, мир!</h1>
+        <h2>Сейчас {this.state.value}</h2>
+        {[1, 2, 3].map((number, index) => 
+          <div key={index}>{number}</div>
+        )}
+      </div>
+    );
+  }
 }
 
 export default App;
