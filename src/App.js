@@ -1,41 +1,71 @@
 import React from 'react'
+import updates from './updates.json'
+import './assets/App.css';
 class App extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      date: new Date(),
-      delay: 1000,
-      timer: null,
-      value: 0
+    this.state = { isUpdateLogActive: false, updates }
+  }
+
+  get updateLogStyle () {
+    return {
+      width: this.props.width
     }
   }
 
-  componentDidMount () {
+  get updateLogClassNames () {
+    return 'update-log ' + (this.state.isUpdateLogActive ? 'update-log_active' : 'update-log_inactive')
+  }
+
+  get updateLogListStyle () {
+    return {
+      height: this.props.height,
+      opacity: this.state.isUpdateLogActive ? 1 : 0
+    }
+  }
+  
+  toggleUpdateLogActive () {
     this.setState({
-      timer: setInterval(this.onTimerLoop.bind(this), this.state.delay)
+      isUpdateLogActive: !this.state.isUpdateLogActive
     })
   }
 
-  componentWillUnmount () {
-    clearInterval(this.state.timer)
-  }
-
-  onTimerLoop () {
-    this.setState((state, props) => ({
-      value: state.value + +props.increment
-    }))
-  }
-
-  render() {
+  render () {
     return (
-      <div>
-        <h1>Привет, мир!</h1>
-        <h2>Сейчас {this.state.value}</h2>
-        {[1, 2, 3].map((number, index) => 
-          <div key={index}>{number}</div>
-        )}
+      <div
+        className={this.updateLogClassNames}
+        style={this.updateLogStyle}>
+        <div className="update-log__header">
+          <span
+            className="material-icons update-log__icon"
+            onClick={this.toggleUpdateLogActive.bind(this)}>
+            notifications
+          </span>
+          {this.state.isUpdateLogActive && (
+            <div className="update-log__title">
+              <span className="update-log__title-text">What`s new</span>
+              <span
+                className="material-icons update-log__icon"
+                onClick={this.toggleUpdateLogActive.bind(this)}>
+                close
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="update-log__list" style={this.updateLogListStyle}>
+          {this.state.updates.map(update => {
+            return (
+              <div className="update-log__item" key={update.id}>
+                <div className="update-log__item-title">{update.title}</div>
+                <div className="update-log__item-description">{update.description}</div>
+                <button className="update-log__item-button">Try it now</button>
+                <a className="update-log__item-link" href="https://vk.com">Learn more</a>
+              </div>
+            )
+          })}
+        </div>
       </div>
-    );
+    )
   }
 }
 
