@@ -58,6 +58,10 @@ class App extends React.Component {
     })
   }
 
+  componentWillUnmount () {
+    this.state.observer.disconnect()
+  }
+
   formatDate (date) {
     return new Date(date).toLocaleString()
   }
