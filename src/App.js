@@ -1,6 +1,7 @@
 import React from 'react'
 import updates from './updates.json'
 import './assets/App.css';
+
 class App extends React.Component {
   constructor (props) {
     super(props)
