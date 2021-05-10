@@ -23,6 +23,10 @@ class App extends React.Component {
       opacity: this.state.isUpdateLogActive ? 1 : 0
     }
   }
+
+  formatDate (date) {
+    return new Date(date).toLocaleString()
+  }
   
   toggleUpdateLogActive () {
     this.setState({
@@ -56,7 +60,8 @@ class App extends React.Component {
           {this.state.updates.map(update => {
             return (
               <div className="update-log__item" key={update.id}>
-                <div className="update-log__item-title">{update.title}</div>
+                <div className="update-log__item-title">[{update.version}] {update.title}</div>
+                <div className="update-log__item-date">{this.formatDate(update.date)}</div>
                 <div className="update-log__item-description">{update.description}</div>
                 <button className="update-log__item-button">Try it now</button>
                 <a className="update-log__item-link" href="https://vk.com">Learn more</a>
